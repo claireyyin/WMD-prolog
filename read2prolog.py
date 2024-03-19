@@ -100,7 +100,7 @@ def readFile(file_path):
             continue
 
     # Write converted data to Prolog File
-    with open('dataset.pl', 'w') as outfile:
+    with open('dataset_min.pl', 'w') as outfile:
         for value in allinfo.values():
             for item in value:
                 outfile.write(item + '\n')
