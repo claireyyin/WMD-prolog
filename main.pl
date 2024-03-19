@@ -1,0 +1,145 @@
+% main.pl
+:- consult('dataset.pl').
+
+
+% following are names for specific object IDs used in the patterns
+% TOPIC_EE = 43035
+% TOPIC_NYC = 60
+% TOPIC_JIHAD = 44311
+% TOPIC_OUTDOORS = 69871376
+% TOPIC_PROSPECT_PARK = 1049632
+% TOPIC_BOMB = 127197
+% TOPIC_EXPLOSION = 179057
+% TOPIC_WILLIAMSBURG = 771572
+% ITEM_BOMB_BATH = 2869238
+% ITEM_PRESSURE_COOKER = 271997
+% ITEM_AMMUNITION = 185785
+% ITEM_ELECTRONICS = 11650
+
+% # Symbolic translation of OIDs
+% NAMES ={60: 'NYC',
+    % 11650: 'electronics', 
+    % 43035: 'EE', 
+    % 44311: 'Jihad', 
+    % 127197: 'Bomb',\
+    % 179057: 'Explosion', 
+    % 185785: 'Ammunition', 
+    % 271997: 'Pressure Cooker',\
+    % 771572: 'Williamsburg', 
+    % 1049632: 'Prospect Park', 
+    % 2030894: 'non NYC',\
+    % 2869238: 'Bath Bomb', 
+    % 69871376: 'Outdoors', 
+    % 477384404927196020: 'Person3',\
+    % 529550602103217450: 'Person6', 
+    % 735713441679521195: 'Person5',\
+    % 932362105613871012: 'FE5', 
+    % 1060309546214304182: 'FE3', \
+    % 1114502034902546550: 'FE1a', 
+    % 1128501731262832684: 'Person1',\
+    % 1202482536733844323: 'F1', 
+    % 1209342585680609487: 'FE4', \
+    % 1372844135435303981: 'F2', 
+    % 1419850416906085161: 'Person2',\
+    % 1433303251800170000: 'Pub1', 
+    % 1472154222902711100: 'Person4',\
+    % 1513662032452523252: 'FE1b'}
+
+%% Ignore cross pattern connections for now
+% Find Sub Patterns
+
+% From Forums with Forum_Events that include 2 Topics: “Outdoors” and “Prospect Park”
+% If a forum with forum_events has_topic on Outdoors AND Prospect Park
+% Key = ID
+
+% Assume topic exists and ID is known, also only 1 answer
+% Get ForumEvent Id that includes certain topics; Forum event 5
+forum_pattern_2A(FE5Id) :-
+    has_topic(FE5Id, 69871376, 1), % 1 = source is forum event, topic = outdoors
+    has_topic(FE5Id, 1049632, 1), % topic = prospect park
+    forumEvent(_, FE5Id, _). % check forumEvent exists
+
+% Topics: Williamsburg, Explosion, Bomb
+% forum event 4 (FE4)
+forum_pattern_2B(FE4Id) :-
+    has_topic(FE4Id, 127197, 1), % bomb
+    has_topic(FE4Id, 179057, 1), % explosion
+    has_topic(FE4Id, 771572, 1), % Williamsburg
+    forumEvent(_, FE4Id, _). 
+
+% Find Forum ID that has 2A and 2B patterns
+forum_pattern_2(Forum2) :-
+    forum_pattern_2A(AEventId), % get Forum IDs with the topics
+    forum_pattern_2B(BEventId),
+    include(Forum2, AEventId), % check if forum includes both A and B forumEvents
+    include(Forum2, BEventId).
+
+    % purchase(Buyer, Seller, Product, Date)
+    % sale(Seller, Buyer, Product, Date).
+% transEvents: ID of person who has purchased Bath bomb, Pressure cooker, Ammunition
+% person = buyer
+% ITEM_BOMB_BATH = 2869238
+% ITEM_PRESSURE_COOKER = 271997
+% ITEM_AMMUNITION = 185785
+% ITEM_ELECTRONICS = 11650
+% Finds Person 1
+transEvents(Person1) :-
+    purchase(Person1, Person2, 2869238, _), % bomb bath
+    purchase(Person1, Person3, 271997, _), % pressure cooker
+    purchase(Person1, Person4, 185785, _). % ammunition
+    %purchase(Person1, Person5, 11650, _). % electronics
+
+% Ammo Subpattern: seller is NOT a person???
+ammo_subpattern(Person6) :-
+    sale(Person4, Person6, 185785, _). % wrong output
+
+% Electronic Subpattern
+% Finds Person5: author of publication on EE AND in a publication whose org is close to NYC
+electronic_subpattern(Person5) :-
+    % find Pub1 Id that has topic EE & close to NYC
+    has_topic(Pub1, 43035, 2), % topic of EE
+    %has_org(Pub1, 2030894), % has org close to NYC 60
+    % find Person5 = author of Pub1
+    author(Person5, Pub1, 0). % author of a PUBLICATION = 0
+
+items_purchased(Person1) :-
+    electronic_subpattern(Person5),
+    transEvents(Person1),
+    purchase(Person1, Person5, 11650, _). % electronics
+
+% Forum 1 patterns
+% Find Forum with Topic=NYC
+forum1_NYC(Forum1) :-
+    has_topic(Forum1, 60, 0), % 0 for FOrum; topic = NYC
+    forum(Forum1). % check Forum1 exisits
+% Forum Event with topic = Jihad
+forumE_jihad(FE1, FE2, Forum1) :-
+    has_topic(FE1, 44311, 1), % has topic of jihad
+    has_topic(FE2, 44311, 1),
+    dif(FE1, FE2), % not same forumevent
+    include(Forum1, FE1), % check if a Forum contains FE1 and FE2
+    include(Forum1, FE2).
+% Find Forum1
+forum1_subpattern(Forum1, FE1, FE2) :-
+    forum1_NYC(Forum1),
+    forumE_jihad(FE1, FE2, Forum1).
+
+% Person1 authors FE1, FE2, FE3
+person1_authors(Person1, FE3) :-
+    forum_pattern_2(Forum2), % get Forum2
+    include(Forum2, FE3), % Forum2 includes FE3
+    author(Person1, FE3, 1), % Person1 authors FE3
+    forum1_subpattern(Forum1, FE1, FE2), % get FE1 and FE2
+    dif(Forum1, Forum2), % Forums are different
+    author(Person1, FE1, 1), % author FE1 and FE2
+    author(Person1, FE2, 1).
+
+% Find person 1 using all the patterns
+find_person1(Person1) :-
+    person1_authors(Person1, FE3),
+    items_purchased(Person1),
+    person(Person1).
+
+% Find all EventIds that meet the conditions
+% find_all_matching_event_ids(EventIds) :-
+%     findall(EventId, forum_pattern_2A(EventId), EventIds).
