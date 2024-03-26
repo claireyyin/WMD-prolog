@@ -1,5 +1,5 @@
 % main.pl
-:- consult('dataset.pl').
+:- consult('dataset_min.pl').
 
 
 % following are names for specific object IDs used in the patterns
@@ -86,21 +86,46 @@ forum_pattern_2(Forum2) :-
 transEvents(Person1) :-
     purchase(Person1, Person2, 2869238, _), % bomb bath
     purchase(Person1, Person3, 271997, _), % pressure cooker
-    purchase(Person1, Person4, 185785, _). % ammunition
+    purchase(Person1, Person4, 185785, _), % ammunition
+    ammo_subpattern(Person4). % check if person 4 sold ammo to 2 people
     %purchase(Person1, Person5, 11650, _). % electronics
 
-% Ammo Subpattern: seller is NOT a person???
-ammo_subpattern(Person6) :-
-    sale(Person4, Person6, 185785, _). % wrong output
+% Ammo Subpattern: person 4 sold ammo to Person 1 AND Person 6
+ammo_subpattern(Person4) :-
+    sale(Person4, Person6, 185785, _),
+    sale(Person4, Person1, 185785, _),
+    dif(Person1, Person6).
+
 
 % Electronic Subpattern
-% Finds Person5: author of publication on EE AND in a publication whose org is close to NYC
+% Calculate between two coordinates in miles
+% distance(LatA, LonA, LatB, LonB, Distance) :-
+%     LonMiles is 0.91 * (LonA - LonB),
+%     LatMiles is 1.115 * (LatA - LatB),
+%     Distance is sqrt(LonMiles**2 + LatMiles**2).
+% Haversin formula
+distance(Lat1, Lon1, Lat2, Lon2, Dis):-
+    P is 0.017453292519943295,
+    A is (0.5 - cos((Lat2 - Lat1) * P) / 2 + cos(Lat1 * P) * cos(Lat2 * P) * (1 - cos((Lon2 - Lon1) * P)) / 2),
+    Dis is (0.621371 * 12742 * asin(sqrt(A))). % in kilometers, converted to miles
+% Finds Person5: author of publication on EE AND in a publication whose org is within 30 miles to NYC
+% Finds Publication with topic of EE, find author of the publication
+% Finds the org-topic for the publication and check that it is NOT NYC
+% Gets the coordinate for the org-topic
+% calculate the distance from NYC
 electronic_subpattern(Person5) :-
     % find Pub1 Id that has topic EE & close to NYC
     has_topic(Pub1, 43035, 2), % topic of EE
-    %has_org(Pub1, 2030894), % has org close to NYC 60
     % find Person5 = author of Pub1
-    author(Person5, Pub1, 0). % author of a PUBLICATION = 0
+    author(Person5, Pub1, 0), % author of a PUBLICATION = 0
+    %\+ has_org(_, 60), %  skip org in NYC
+    has_org(Pub1, Org), % is there only 1 always? or use cut
+    dif(Org, 60), % org ID is not NYC=60
+    topic(Org, LatA, LonA), % get the coordinates for Org
+    % comparison of longitudes, latitudes to see if close to NYC within 30 miles
+    % check distance of coordinates
+    distance(LatA, LonA, 40.67, -73.94, Distance), % NYC coordinates from NYC topic
+    Distance =< 30.0.
 
 items_purchased(Person1) :-
     electronic_subpattern(Person5),
