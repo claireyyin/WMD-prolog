@@ -85,10 +85,7 @@ checkdates(ItemDate) :-
     ItemDate > FEDate. % item purchased AFTER forum event
 % transEvents: ID of person who has purchased Bath bomb, Pressure cooker, Ammunition
 % person = buyer
-% ITEM_BOMB_BATH = 2869238
-% ITEM_PRESSURE_COOKER = 271997
-% ITEM_AMMUNITION = 185785
-% ITEM_ELECTRONICS = 11650
+
 % Finds Person 1
 transEvents(Person1, Person2, Person3, Person4) :-
     purchase(Person1, Person2, 2869238, BBDate), % bomb bath

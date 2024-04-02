@@ -1,0 +1,42 @@
+% following are names for specific object IDs used in the patterns
+% TOPIC_EE = 43035
+% TOPIC_NYC = 60
+% TOPIC_JIHAD = 44311
+% TOPIC_OUTDOORS = 69871376
+% TOPIC_PROSPECT_PARK = 1049632
+% TOPIC_BOMB = 127197
+% TOPIC_EXPLOSION = 179057
+% TOPIC_WILLIAMSBURG = 771572
+% ITEM_BOMB_BATH = 2869238
+% ITEM_PRESSURE_COOKER = 271997
+% ITEM_AMMUNITION = 185785
+% ITEM_ELECTRONICS = 11650
+
+% # Symbolic translation of OIDs
+% NAMES ={60: 'NYC',
+    % 11650: 'electronics', 
+    % 43035: 'EE', 
+    % 44311: 'Jihad', 
+    % 127197: 'Bomb',\
+    % 179057: 'Explosion', 
+    % 185785: 'Ammunition', 
+    % 271997: 'Pressure Cooker',\
+    % 771572: 'Williamsburg', 
+    % 1049632: 'Prospect Park', 
+    % 2030894: 'non NYC',\
+    % 2869238: 'Bath Bomb', 
+    % 69871376: 'Outdoors', 
+    % 477384404927196020: 'Person3',\
+    % 529550602103217450: 'Person6', 
+    % 735713441679521195: 'Person5',\
+    % 932362105613871012: 'FE5', 
+    % 1060309546214304182: 'FE3', \
+    % 1114502034902546550: 'FE1a', 
+    % 1128501731262832684: 'Person1',\
+    % 1202482536733844323: 'F1', 
+    % 1209342585680609487: 'FE4', \
+    % 1372844135435303981: 'F2', 
+    % 1419850416906085161: 'Person2',\
+    % 1433303251800170000: 'Pub1', 
+    % 1472154222902711100: 'Person4',\
+    % 1513662032452523252: 'FE1b'}
