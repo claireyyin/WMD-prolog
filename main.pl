@@ -67,15 +67,22 @@ forum_pattern_2B(FE4Id) :-
     has_topic(FE4Id, 771572, 1), % Williamsburg
     forumEvent(_, FE4Id, _). 
 
+
 % Find Forum ID that has 2A and 2B patterns
-forum_pattern_2(Forum2) :-
-    forum_pattern_2A(AEventId), % get Forum IDs with the topics
-    forum_pattern_2B(BEventId),
-    include(Forum2, AEventId), % check if forum includes both A and B forumEvents
-    include(Forum2, BEventId).
+forum_pattern_2(Forum2, FE5Id, FE4Id) :-
+    forum_pattern_2A(FE5Id), % get Forum IDs with the topics
+    forum_pattern_2B(FE4Id),
+    include(Forum2, FE5Id), % check if forum includes both A and B forumEvents
+    include(Forum2, FE4Id).
 
     % purchase(Buyer, Seller, Product, Date)
     % sale(Seller, Buyer, Product, Date).
+
+% function to find transaction dates, find Forum Event 4 then check the dates
+checkdates(ItemDate) :-
+    forum_pattern_2B(FE4Id),
+    forumEvent(_, FE4Id, FEDate),
+    ItemDate > FEDate. % item purchased AFTER forum event
 % transEvents: ID of person who has purchased Bath bomb, Pressure cooker, Ammunition
 % person = buyer
 % ITEM_BOMB_BATH = 2869238
@@ -83,15 +90,18 @@ forum_pattern_2(Forum2) :-
 % ITEM_AMMUNITION = 185785
 % ITEM_ELECTRONICS = 11650
 % Finds Person 1
-transEvents(Person1) :-
-    purchase(Person1, Person2, 2869238, _), % bomb bath
-    purchase(Person1, Person3, 271997, _), % pressure cooker
-    purchase(Person1, Person4, 185785, _), % ammunition
-    ammo_subpattern(Person4). % check if person 4 sold ammo to 2 people
-    %purchase(Person1, Person5, 11650, _). % electronics
+transEvents(Person1, Person2, Person3, Person4) :-
+    purchase(Person1, Person2, 2869238, BBDate), % bomb bath
+    checkdates(BBDate), % check if purchased after
+    purchase(Person1, Person3, 271997, PCDate), % pressure cooker
+    checkdates(PCDate), 
+    purchase(Person1, Person4, 185785, AmmoDate), % ammunition
+    checkdates(AmmoDate), 
+    ammo_subpattern(Person4, Person6, Person1). % check if person 4 sold ammo to 2 people
+    
 
 % Ammo Subpattern: person 4 sold ammo to Person 1 AND Person 6
-ammo_subpattern(Person4) :-
+ammo_subpattern(Person4, Person6, Person1) :-
     sale(Person4, Person6, 185785, _),
     sale(Person4, Person1, 185785, _),
     dif(Person1, Person6).
@@ -113,13 +123,14 @@ distance(Lat1, Lon1, Lat2, Lon2, Dis):-
 % Finds the org-topic for the publication and check that it is NOT NYC
 % Gets the coordinate for the org-topic
 % calculate the distance from NYC
+% put cut, after certain subpattern
 electronic_subpattern(Person5) :-
     % find Pub1 Id that has topic EE & close to NYC
     has_topic(Pub1, 43035, 2), % topic of EE
     % find Person5 = author of Pub1
     author(Person5, Pub1, 0), % author of a PUBLICATION = 0
     %\+ has_org(_, 60), %  skip org in NYC
-    has_org(Pub1, Org), % is there only 1 always? or use cut
+    has_org(Pub1, Org), % may be more than 1
     dif(Org, 60), % org ID is not NYC=60
     topic(Org, LatA, LonA), % get the coordinates for Org
     % comparison of longitudes, latitudes to see if close to NYC within 30 miles
@@ -129,7 +140,7 @@ electronic_subpattern(Person5) :-
 
 items_purchased(Person1) :-
     electronic_subpattern(Person5),
-    transEvents(Person1),
+    transEvents(Person1, Person2, Person3, Person4),
     purchase(Person1, Person5, 11650, _). % electronics
 
 % Forum 1 patterns
@@ -150,8 +161,8 @@ forum1_subpattern(Forum1, FE1, FE2) :-
     forumE_jihad(FE1, FE2, Forum1).
 
 % Person1 authors FE1, FE2, FE3
-person1_authors(Person1, FE3) :-
-    forum_pattern_2(Forum2), % get Forum2
+person1_authors(Person1, FE1, FE2, FE3) :-
+    forum_pattern_2(Forum2, FE5Id, FE4Id), % get Forum2
     include(Forum2, FE3), % Forum2 includes FE3
     author(Person1, FE3, 1), % Person1 authors FE3
     forum1_subpattern(Forum1, FE1, FE2), % get FE1 and FE2
@@ -161,7 +172,7 @@ person1_authors(Person1, FE3) :-
 
 % Find person 1 using all the patterns
 find_person1(Person1) :-
-    person1_authors(Person1, FE3),
+    person1_authors(Person1, FE1, FE2, FE3),
     items_purchased(Person1),
     person(Person1).
 

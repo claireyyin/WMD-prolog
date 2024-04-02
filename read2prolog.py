@@ -100,7 +100,7 @@ def readFile(file_path):
             continue
 
     # Write converted data to Prolog File
-    with open('dataset_min.pl', 'w') as outfile:
+    with open('dataset_r10.pl', 'w') as outfile:
         for value in allinfo.values():
             for item in value:
                 outfile.write(item + '\n')
@@ -116,7 +116,7 @@ def date_to_int(x):
     return int_date
 
 def main():
-    readFile('data_minimal.csv')
+    readFile('data_r10.csv')
 
 if __name__ == "__main__":
     main()
