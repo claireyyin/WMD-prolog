@@ -21,7 +21,6 @@ def readFile(file_path):
     flag = None
     for line in source_reader: 
         info = line
-        #num_lines += 1
 
         # Vertex
         if info[0]=='Person': # vertex properties = []
@@ -68,8 +67,12 @@ def readFile(file_path):
                 convertdate = date_to_int(info[DATE_COL])
                 date = str(convertdate)
             seller = info[PERSON1_COL] 
-            buyer = info[PERSON2_COL] 
-            product = info[TOPIC_COL]
+            buyer = info[PERSON2_COL]
+            # product = info[TOPIC_COL]
+            if info[TOPIC_COL]:
+                product = info[TOPIC_COL]
+            else:
+                product = '_'
             #info = [element for element in line if element.strip()]
             # formatted_data = f"sale({', '.join(info[1:])})" + "."
             sale_data = "sale(" + seller + ", " + buyer + ", " + product + ", " + date + ")."
@@ -100,10 +103,11 @@ def readFile(file_path):
             continue
 
     # Write converted data to Prolog File
-    with open('dataset_r10.pl', 'w') as outfile:
+    with open('dataset10.pl', 'w') as outfile:
         for value in allinfo.values():
             for item in value:
                 outfile.write(item + '\n')
+    print("Conversion to Prolog Complete")
     return 
 
 # Convert Date to Int
@@ -116,7 +120,7 @@ def date_to_int(x):
     return int_date
 
 def main():
-    readFile('data_r10.csv')
+    readFile('data.10.csv')
 
 if __name__ == "__main__":
     main()
