@@ -13,7 +13,7 @@ LON_COL = 9
 dom =[31,28,31,30,31,30,31,31,30,31,30,31]
 
 # Read in CSV File and Convert to Prolog format
-def readFile(file_path):
+def readFile(file_path, output):
     source = open(file_path,'r')
     source_reader = csv.reader(source)
     print('Reading file: ',file_path)
@@ -103,7 +103,7 @@ def readFile(file_path):
             continue
 
     # Write converted data to Prolog File
-    with open('dataset10.pl', 'w') as outfile:
+    with open(output, 'w') as outfile:
         for value in allinfo.values():
             for item in value:
                 outfile.write(item + '\n')
@@ -120,7 +120,7 @@ def date_to_int(x):
     return int_date
 
 def main():
-    readFile('data.10.csv')
+    readFile('data_minimal.csv', 'dataset_min.pl')
 
 if __name__ == "__main__":
     main()
