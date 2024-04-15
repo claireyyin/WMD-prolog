@@ -1,7 +1,8 @@
 % main.pl
-:- consult('dataset_min.pl').
-
-
+% Turn off warnings
+:-style_check(-discontiguous).
+:-style_check(-singleton).
+:- consult('dataset_r10.pl').
 % From Forums with Forum_Events that include 2 Topics: “Outdoors” and “Prospect Park”
 % If a forum with forum_events has_topic on Outdoors AND Prospect Park
 % Key = ID
@@ -59,11 +60,6 @@ ammo_subpattern(Person4, Person6, Person1) :-
 
 
 % Electronic Subpattern
-% Calculate between two coordinates in miles
-% distance(LatA, LonA, LatB, LonB, Distance) :-
-%     LonMiles is 0.91 * (LonA - LonB),
-%     LatMiles is 1.115 * (LatA - LatB),
-%     Distance is sqrt(LonMiles**2 + LatMiles**2).
 % Haversin formula
 distance(Lat1, Lon1, Lat2, Lon2, Dis):-
     P is 0.017453292519943295,
@@ -126,6 +122,13 @@ find_person1(Person1) :-
     person1_authors(Person1, FE1, FE2, FE3),
     items_purchased(Person1),
     person(Person1).
+
+% Repeat timing query N times
+repeat_time_query(0). % Base case, stop when count reaches 0
+repeat_time_query(N) :-
+    time(find_person1(P1)),
+    N1 is N - 1,
+    repeat_time_query(N1).
 
 % Find all EventIds that meet the conditions
 % find_all_matching_event_ids(EventIds) :-
