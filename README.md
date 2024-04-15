@@ -1,6 +1,6 @@
 # CSE Independent Research Spring 2024 
 **by Claire Yin** 
-**advised by Peter Kogge**  
+**advised by Professor Peter Kogge**  
 Project on using Prolog to represent WMD graph and find Person1
 
 ## Main Files
