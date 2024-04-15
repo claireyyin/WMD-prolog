@@ -8,7 +8,7 @@ read2prolog.py: Python script to convert CSV dataset to Prolog dataset format
 
 main.pl: Prolog code for finding Person1 (+subpatterns)  
 
-get_timing.sh: Shell script get the timings of find_person1 (10 times) -> .txt file 
+get_timing.sh: Shell script to retrieve the timings of find_person1 (10 times) -> saved to .txt file 
 
 parse_time.py: Python script to parse the timing text files into CSV files  
 *(Inferences, CPU, Seconds, Lips)*
