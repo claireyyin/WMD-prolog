@@ -1,4 +1,8 @@
-:- consult('dataset01.pl').
+% Turn off warnings
+:-style_check(-discontiguous).
+:-style_check(-singleton).
+:- consult('dataset10.pl').
+:- write('Using Dataset: dataset10.pl'), nl.
 % One Single Query for Person1
 person1(Person1) :-
     % pattern 2A
@@ -12,7 +16,7 @@ person1(Person1) :-
     include(Forum2, FE5Id), % check if forum includes both A and B forumEvents
     include(Forum2, FE4Id),
     % Trans Events
-    forumEvent(_, FE5Id, _),
+   % forumEvent(_, FE5Id, _),
     forumEvent(_, FE4Id, FEDate), % get FE4 Date
     purchase(Person1, Person2, 2869238, BBDate),
     BBDate > FEDate,
@@ -36,7 +40,7 @@ person1(Person1) :-
     Distance =< 30.0,
     % Forum 1 Patterns
     has_topic(Forum1, 60, 0), % 0 for FOrum; topic = NYC
-    forum(Forum1),
+  %  forum(Forum1),
     has_topic(FE1, 44311, 1), % has topic of jihad
     has_topic(FE2, 44311, 1),
     dif(FE1, FE2), % not same forumevent
@@ -46,11 +50,18 @@ person1(Person1) :-
     include(Forum2, FE3), % Forum2 includes FE3
     dif(Forum1, Forum2), % Forums are different
     author(Person1, FE1, 1), % author FE1 and FE2
-    author(Person1, FE2, 1),
-    person(Person1).
+    author(Person1, FE2, 1).
+  %  person(Person1).
 
 
 distance(Lat1, Lon1, Lat2, Lon2, Dis):-
     P is 0.017453292519943295,
     A is (0.5 - cos((Lat2 - Lat1) * P) / 2 + cos(Lat1 * P) * cos(Lat2 * P) * (1 - cos((Lon2 - Lon1) * P)) / 2),
     Dis is (0.621371 * 12742 * asin(sqrt(A))). 
+
+% Repeat timing query N times
+repeat_time_query(0). % Base case, stop when count reaches 0
+repeat_time_query(N) :-
+    time(person1(P1)),
+    N1 is N - 1,
+    repeat_time_query(N1).
