@@ -1,7 +1,7 @@
 # CSE Independent Research Spring 2024 
 **by Claire Yin**  
 **advised by Professor Peter Kogge**  
-Project on using Prolog to represent WMD graph and find Person1
+Project on using Prolog to model the relationships of complex WMD graph and find Person1
 
 ## Main Files
 `read2prolog.py`: Python script to convert CSV dataset to Prolog dataset format  
