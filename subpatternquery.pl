@@ -1,11 +1,7 @@
-% main.pl
 % Turn off warnings
 :-style_check(-discontiguous).
 :-style_check(-singleton).
 :- consult('dataset_r10.pl').
-% From Forums with Forum_Events that include 2 Topics: “Outdoors” and “Prospect Park”
-% If a forum with forum_events has_topic on Outdoors AND Prospect Park
-% Key = ID
 
 % Assume topic exists and ID is known, also only 1 answer
 % Get ForumEvent Id that includes certain topics; Forum event 5
