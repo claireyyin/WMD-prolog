@@ -2,8 +2,9 @@
 :-style_check(-discontiguous).
 :-style_check(-singleton).
 :- consult('dataset_r10.pl').
+:- write('Using Dataset: dataset_r10.pl'), nl.
+% Graph Subpatterns
 
-% Assume topic exists and ID is known, also only 1 answer
 % Get ForumEvent Id that includes certain topics; Forum event 5
 forum_pattern_2A(FE5Id) :-
     has_topic(FE5Id, 69871376, 1), % 1 = source is forum event, topic = outdoors
@@ -18,7 +19,6 @@ forum_pattern_2B(FE4Id) :-
     has_topic(FE4Id, 771572, 1), % Williamsburg
     forumEvent(_, FE4Id, _). 
 
-
 % Find Forum ID that has 2A and 2B patterns
 forum_pattern_2(Forum2, FE5Id, FE4Id) :-
     forum_pattern_2A(FE5Id), % get Forum IDs with the topics
@@ -26,10 +26,7 @@ forum_pattern_2(Forum2, FE5Id, FE4Id) :-
     include(Forum2, FE5Id), % check if forum includes both A and B forumEvents
     include(Forum2, FE4Id).
 
-    % purchase(Buyer, Seller, Product, Date)
-    % sale(Seller, Buyer, Product, Date).
-
-% function to find transaction dates, find Forum Event 4 then check the dates
+% Function to find transaction dates, find Forum Event 4 then check the dates
 checkdates(ItemDate) :-
     forum_pattern_2B(FE4Id),
     forumEvent(_, FE4Id, FEDate),
@@ -47,13 +44,11 @@ transEvents(Person1, Person2, Person3, Person4) :-
     checkdates(AmmoDate), 
     ammo_subpattern(Person4, Person6, Person1). % check if person 4 sold ammo to 2 people
     
-
 % Ammo Subpattern: person 4 sold ammo to Person 1 AND Person 6
 ammo_subpattern(Person4, Person6, Person1) :-
     sale(Person4, Person6, 185785, _),
     sale(Person4, Person1, 185785, _),
     dif(Person1, Person6).
-
 
 % Electronic Subpattern
 % Haversin formula
@@ -66,7 +61,7 @@ distance(Lat1, Lon1, Lat2, Lon2, Dis):-
 % Finds the org-topic for the publication and check that it is NOT NYC
 % Gets the coordinate for the org-topic
 % calculate the distance from NYC
-% put cut, after certain subpattern
+
 electronic_subpattern(Person5) :-
     % find Pub1 Id that has topic EE & close to NYC
     has_topic(Pub1, 43035, 2), % topic of EE
@@ -80,7 +75,7 @@ electronic_subpattern(Person5) :-
     % check distance of coordinates
     distance(LatA, LonA, 40.67, -73.94, Distance), % NYC coordinates from NYC topic
     Distance =< 30.0.
-
+% Items_purchased subpattern
 items_purchased(Person1) :-
     electronic_subpattern(Person5),
     transEvents(Person1, Person2, Person3, Person4),
