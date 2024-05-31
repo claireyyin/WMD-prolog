@@ -15,12 +15,12 @@ Project on using Prolog to model the relationships of complex WMD graph and find
 `unittests.pl`: Prolog test queries to check subpatterns and final Person1
 
 # How to run the program
-## Converting original CSV data into Prolog database file
+## 1. Converting original CSV data into Prolog database file
 **Files needed: `read2prolog.py` and CSV files**  
 *The CSV files and read2prolog.py must be in the same directory.*  
 `read2prolog.py` is a Python program that reads the CSV data and converts it into Prolog, storing them in a Prolog database file. The `readFile()` function reads the CSV file and writes the Prolog database to an output file. On line 23 (in the main function), you need to input the CSV filename and Prolog database filename as arguments to `readfile()`:  (CSV filename, Prolog database filename).
 
-## Mapping the graph and finding Person1
+## 2. Mapping the graph and finding Person1
 **Files needed: `singlequery.pl` or `subpatternquery.pl`**  
 `singlequery.pl` is one single rule to represent relationships between facts to find Person1. 
 `subpatternquery.pl` models the graph’s subpatterns as rules to find Person1. Both Prolog scripts find Person1.  
@@ -37,7 +37,7 @@ Query to execute search for Person1 in the Prolog database using the rules:
 After executing the query, the Object ID of Person1 should be returned to the terminal. If Person1 is not found, False will be returned.  
 `Person1 = 1128501731262832684 .`
 
-## Run timings of Prolog query for Person1:
+## 3. Run timings of Prolog query for Person1:
 **Files needed: `get_timing.sh`, `parse_time.py`**  
 `get_timing.sh` is a shell script that runs and times the find_person1() query n times and saves the timings in a text file.
 To run `get_timings.sh`, change the query filename and output timing file name:  
