@@ -15,6 +15,7 @@ Project on using Prolog to model the relationships of complex WMD graph and find
 `unittests.pl`: Prolog test queries to check subpatterns and final Person1
 
 # How to run the program
+Prolog version needed: SWI-Prolog version 9.0.4  
 ## 1. Converting original CSV data into Prolog database file
 **Files needed: `read2prolog.py` and CSV files**  
 *The CSV files and read2prolog.py must be in the same directory.*  
