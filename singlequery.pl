@@ -4,7 +4,7 @@
 :- consult('dataset10.pl').
 :- write('Using Dataset: dataset10.pl'), nl.
 % One Single Query for Person1
-person1(Person1) :-
+find_person1(Person1) :-
     % pattern 2A
     has_topic(FE5Id, 69871376, 1), % 1 = source is forum event, topic = outdoors
     has_topic(FE5Id, 1049632, 1), % topic = prospect park
