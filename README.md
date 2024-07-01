@@ -19,7 +19,7 @@ Prolog version needed: SWI-Prolog version 9.0.4
 ## 1. Converting original CSV data into Prolog database file
 **Files needed: `read2prolog.py` and CSV files**  
 *The CSV files and read2prolog.py must be in the same directory.*  
-`read2prolog.py` is a Python program that reads the CSV data and converts it into Prolog, storing them in a Prolog database file. The `readFile()` function reads the CSV file and writes the Prolog database to an output file. On line 23 (in the main function), you need to input the CSV filename and Prolog database filename as arguments to `readfile()`:  (CSV filename, Prolog database filename).
+`read2prolog.py` is a Python program that reads the CSV data and converts it into Prolog, storing them in a Prolog database file. The `readFile()` function reads the CSV file and writes the Prolog database to an output file. On line 23 (in the main function), you need to input the CSV filename and Prolog database filename as arguments to `readfile()`:  `(CSV filename, Prolog database filename)`.
 
 ## 2. Mapping the graph and finding Person1
 **Files needed: `singlequery.pl` or `subpatternquery.pl`**  
@@ -46,4 +46,4 @@ To run `get_timings.sh`, change the query filename and output timing file name:
 `repeat_time_query(3).`  # You can change the number of times the query is run.  
 
 `parse_time.py` is a Python program that parses the timing text file into a formatted CSV file.  
-To run `parse_time.py`, you need to input the timings text filename and output CSV filename as arguments to `parseFile()`:  (TIMINGS_FILENAME.txt, CSV_OUTPUT_FILENAME.csv). This is on line 26. 
+To run `parse_time.py`, you need to input the timings text filename and output CSV filename as arguments to `parseFile()`:  `(TIMINGS_FILENAME.txt, CSV_OUTPUT_FILENAME.csv)`. This is on line 26. 
