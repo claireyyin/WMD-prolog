@@ -3,7 +3,7 @@
 echo "Timing started"
 # Start Prolog interpreter and write to txt file
 swipl -s singlequery.pl <<EOF > time10.txt 2>&1
-repeat_time_query(10). 
+repeat_time_query(3). 
 halt.
 EOF
 echo "Timing complete"
