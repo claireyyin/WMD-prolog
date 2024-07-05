@@ -32,7 +32,7 @@ Line 5:   `:- write('Using Dataset: PROLOG DATABASE FILE.pl'), nl.`
 ### Running the query in the command line:
 *You must be in the same directory as the query file.*
 To launch SWI-Prolog and load in the query file:  
-`$ swipl -s main.pl`  
+`$ swipl -s singlequery.pl` or `subpatternquery.pl`  
 Query to execute search for Person1 in the Prolog database using the rules:  
 `?- find_person1(Person1).`  
 After executing the query, the Object ID of Person1 should be returned to the terminal. If Person1 is not found, False will be returned.  
