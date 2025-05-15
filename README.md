@@ -71,4 +71,23 @@ else:
     continue
 
 call find_person1 on new_db
+```
+
+## Files 
+partialmatch.pl: Main Prolog script. Processes the input dataset, applies subpattern matching rules, and builds the new database.
+
+output.txt: Logs every evaluated fact with messages such as:
+
+"Fact asserted: [fact]"
+
+"No match found for: [fact]"
+
+new_db.pl: Contains all facts that match the subpattern and were asserted.
+
+### How to Run
+`swipl -s partialmatch.pl`
+
+`?- process_file('dataset_min.pl', 'output.txt').`
+
+
 
