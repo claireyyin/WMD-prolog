@@ -1,4 +1,4 @@
-# CSE Independent Research Spring 2024 
+# Prolog Independent Research 2024-2025
 **by Claire Yin**  
 **advised by Professor Peter Kogge**  
 Project on using Prolog to model the relationships of complex WMD graph and find Person1
@@ -47,3 +47,28 @@ To run `get_timings.sh`, change the query filename and output timing file name:
 
 `parse_time.py` is a Python program that parses the timing text file into a formatted CSV file.  
 To run `parse_time.py`, you need to input the timings text filename and output CSV filename as arguments to `parseFile()`:  `(TIMINGS_FILENAME.txt, CSV_OUTPUT_FILENAME.csv)`. This is on line 26. 
+
+## Partial Matching Spring 2025
+
+I implemented a partial matching program for the subgraph. The program processes a dataset of vertices and edges line by line, evaluating each fact against a specified subpattern. Matching facts are inserted into a new Prolog database for further querying.
+
+### Overview
+
+The program reads a Prolog database in line by line. For each fact:
+
+- It checks if the fact matches a subgraph pattern by checking its predicate (`hastopic`, `forumEvent`, `purchase`, and `sale`) and argument (`ObjectId`).
+- If a match is found, it asserts the fact into a new Prolog database (`new_db.pl`) using `asserta/1`.
+- All actions are logged in `output.txt`: asserted into new database or not.
+
+Next Steps: Process and match all facts; Write a rule to query for `Person1` in the new database of matching facts.
+
+### Logic Summary
+
+```prolog
+if fact matches subpattern:
+    asserta(fact) into new_db
+else:
+    continue
+
+call find_person1 on new_db
+
