@@ -109,34 +109,3 @@ process_sale(Term, OutStream, NewDBStream) :-
         )
     ).
 
-
-% Process each term, check subpattern rules, and assert facts into new_db if valid
-process_term(Term, OutStream, NewDBStream) :-
-    (   Term =.. [publication | _]
-    ;   Term =.. [forumEvent | _]
-    ;   Term =.. [forum | _]
-    ;   Term =.. [person | _]
-    ;   Term =.. [topic | _]
-    ;   Term =.. [author | _]
-    ;   Term =.. [has_topic | _]
-    ;   Term =.. [sale | _]
-    ;   Term =.. [purchase | _]
-    ;   Term =.. [include | _]
-    ;   Term =.. [has_org | _]
-    ),
-    (   forum_pattern_2A(FE5Id),
-            forum_pattern_2B(FE4Id),
-            forum_pattern_2(Forum2, FE5Id, FE4Id),
-            transEvents(Person1, Person2, Person3, Person4),
-            ammo_subpattern(Person4, Person6, Person1),
-            electronic_subpattern(Person5),
-            items_purchased(Person1),
-            forum1_NYC(Forum1),
-            forumE_jihad(FE1, FE2, Forum1),
-            forum1_subpattern(Forum1, FE1, FE2),
-            person1_authors(Person1, FE1, FE2, FE3)
-    ->  assertz(Term),  % Assert fact into Prolog's dynamic database
-        format(NewDBStream, '~q.~n', [Term]),  % Save fact in new_db.pl
-        format(OutStream, 'Fact asserted: ~w~n', [Term])
-    ;   format(OutStream, 'No match found for: ~w~n', [Term])
-    ).
