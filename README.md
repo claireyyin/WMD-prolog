@@ -1,6 +1,4 @@
-# Prolog Independent Research 2024-2025
-**by Claire Yin**  
-**advised by Professor Peter Kogge**  
+# Subgraph Isomorphism: Prolog vs. Conventional
 Project on using Prolog to model the relationships of complex WMD graph and find Person1
 
 ## Main Files
@@ -48,7 +46,7 @@ To run `get_timings.sh`, change the query filename and output timing file name:
 `parse_time.py` is a Python program that parses the timing text file into a formatted CSV file.  
 To run `parse_time.py`, you need to input the timings text filename and output CSV filename as arguments to `parseFile()`:  `(TIMINGS_FILENAME.txt, CSV_OUTPUT_FILENAME.csv)`. This is on line 26. 
 
-# Partial Matching Spring 2025
+# Partial Matching 
 
 I implemented a partial matching program for the subgraph. The program processes a dataset of vertices and edges line by line, evaluating each fact against a specified subpattern. Matching facts are inserted into a new Prolog database for further querying.
 
